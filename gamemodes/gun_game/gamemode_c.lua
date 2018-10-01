@@ -1,6 +1,8 @@
-local InitPos = {199.32, -935.56, 32.69}
+local InitPos = {3615.9, 3789.83, 29.2}
+Sessionised = true
 
 RegisterNetEvent("Gamemode:Start:4")
+RegisterNetEvent("Gamemode:Session:4")
 
 AddEventHandler("Gamemode:Init:4", function(GamemodeData)
     local x,y,z = table.unpack(InitPos)
@@ -12,20 +14,28 @@ AddEventHandler("Gamemode:Init:4", function(GamemodeData)
         Citizen.Wait(0)
     end
 
-    view1=CreateCam("DEFAULT_SCRIPTED_CAMERA", 1)
-    SetCamCoord(view1, x, y, z + 3.0)
+    view1 = CreateCam("DEFAULT_SCRIPTED_CAMERA", 1)
+    SetCamCoord(view1, 3615.9, 3799.83, 29.2 + 35)
     SetCamRot(view1, -20.0, 0.0, 180.0)
     SetCamFov(view1, 45.0)
     RenderScriptCams(true, 1, 500,  true,  true)
+    AnimatedShakeCam(view1,"shake_cam_all@", "light", "", 1)
+   
+    Wait(10000)
     
-    Wait(1000)
+    DestroyCam(view1, 0)
+    RenderScriptCams(0, 0, 1, 1, 1)
+    SetFocusEntity(GetPlayerPed(PlayerId()))
+
     StartMain()
 
 end)
 
 AddEventHandler("Gamemode:Start:4", function()
+    Sessionised = true
     StartMain()
 end)
+
 
 local GunLevels = {}
 
@@ -105,4 +115,36 @@ AddEventHandler("gun_game:UpdateLevels", function(GunData)
         print(k, v)
         table.insert(top3, {sid = k, score = v})
     end
+end)
+
+Citizen.CreateThread(function()
+    Citizen.Wait(0)
+
+    while true do
+        TriggerServerEvent("Gamemode:Heartbeat:4", PlayerId())
+        Citizen.Wait(1000)
+    end
+end)
+
+Citizen.CreateThread(function()
+    Citizen.Wait(0)
+
+    while true do
+        SetEntityCoords(PlayerPedId(), 3615.9, 3789.83, 29.2, 0.0, 0.0, 0.0, 0)
+        N_0xd8295af639fd9cb8(PlayerPedId())
+
+        view1 = CreateCam("DEFAULT_SCRIPTED_CAMERA", 1)
+        SetCamCoord(view1, 3615.9, 3799.83, 29.2 + 35)
+        SetCamRot(view1, -20.0, 0.0, 180.0)
+        SetCamFov(view1, 45.0)
+        RenderScriptCams(true, 1, 500,  true,  true)
+        AnimatedShakeCam(view1,"shake_cam_all@", "light", "", 1)
+       
+        Wait(10000)
+        DestroyCam(view1, 0)
+        RenderScriptCams(0, 0, 1, 1, 1)
+        SetFocusEntity(GetPlayerPed(PlayerId()))
+
+        Wait(100000)
+    end    
 end)

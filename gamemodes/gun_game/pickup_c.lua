@@ -20,7 +20,7 @@ AddEventHandler("Gamemode:SpawnPickup:4", function()
         RequestModel(PickupVehModel)
         RequestModel(PickupDriverModel)
 
-        while not HasModelLoaded(PickupVehModel) or HasModelLoaded(PickupVehModel) then
+        while not HasModelLoaded(PickupVehModel) or HasModelLoaded(PickupVehModel) do
             Wait(0)
         end
 
